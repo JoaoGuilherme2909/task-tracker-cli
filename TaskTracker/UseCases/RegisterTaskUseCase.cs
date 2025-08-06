@@ -1,12 +1,18 @@
+using TaskTracker.DTOs;
 using TaskTracker.Infraestructure;
 
 namespace TaskTracker.UseCases;
 
-public class TaskUseCases
+public class RegisterTaskUseCase
 {
     private readonly HandleFileRepository handleFileRepository = new HandleFileRepository();
 
-    public void registerTask()
+    public void execute()
+    {
+        
+    }
+
+    public void validate(CreateTaskDto createTaskDto)
     {
         
     }
