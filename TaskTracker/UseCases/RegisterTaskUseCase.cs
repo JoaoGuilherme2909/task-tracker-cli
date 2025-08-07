@@ -11,9 +11,18 @@ public class RegisterTaskUseCase
     public void execute(string description)
     {
         var jsonString = handleFileRepository.ReadFile();
+        List<TaskModel> tasks;
         
-        List<TaskModel> tasks = JsonSerializer.Deserialize<List<TaskModel>>(jsonString) ?? new List<TaskModel>();
+        if (jsonString.Equals(string.Empty))
+        {
+            tasks = new List<TaskModel>();
+        }
+        else
+        {
+            tasks = JsonSerializer.Deserialize<List<TaskModel>>(jsonString) ?? new List<TaskModel>();            
+        }
         
+
         tasks.Add(new TaskModel()
         {
             Id = tasks.LastOrDefault()?.Id + 1 ?? 1,
