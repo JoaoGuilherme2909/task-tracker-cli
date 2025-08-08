@@ -4,7 +4,15 @@ namespace TaskTracker.Infraestructure;
 
 public class HandleFileRepository
 {
-    string path = $"/home/joao/Documentos/TaskTracker.json";
+    string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/TaskTracker.json";
+
+    public HandleFileRepository()
+    {
+        if (!File.Exists(path))
+        {
+            File.Create(path).Close();
+        }
+    }
 
     public void WriteFile(string content)
     {

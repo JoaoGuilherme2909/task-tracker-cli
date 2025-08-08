@@ -7,4 +7,9 @@ public class TaskModel
     public Status Status { get; set; }
     public DateTime CreatedAt {get; set;}
     public DateTime UpdateAt {get; set;}
+
+    public override string ToString()
+    {
+        return $"id: {Id} - Title: {Title} - Status: {Status.ToString()}";
+    }
 }

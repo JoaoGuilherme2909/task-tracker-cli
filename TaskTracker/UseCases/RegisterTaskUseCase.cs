@@ -1,27 +1,24 @@
 using System.Text.Json;
 using TaskTracker.Infraestructure;
 using TaskTracker.Models;
+using TaskTracker.Utils;
 
 namespace TaskTracker.UseCases;
 
 public class RegisterTaskUseCase
 {
-    private readonly HandleFileRepository handleFileRepository = new HandleFileRepository();
+    private readonly HandleFileRepository _repository;
+
+    public RegisterTaskUseCase(HandleFileRepository handleFileRepository)
+    {
+        _repository = handleFileRepository;
+    }
 
     public void execute(string description)
     {
-        var jsonString = handleFileRepository.ReadFile();
-        List<TaskModel> tasks;
+        var jsonString = _repository.ReadFile();
         
-        if (jsonString.Equals(string.Empty))
-        {
-            tasks = new List<TaskModel>();
-        }
-        else
-        {
-            tasks = JsonSerializer.Deserialize<List<TaskModel>>(jsonString) ?? new List<TaskModel>();            
-        }
-        
+        var tasks = Deserializer<List<TaskModel>>.Deserialize(jsonString);
 
         tasks.Add(new TaskModel()
         {
@@ -34,7 +31,7 @@ public class RegisterTaskUseCase
         
         tasks = tasks.OrderBy(x => x.Id).ToList();
         
-        handleFileRepository.WriteFile(JsonSerializer.Serialize(tasks));
+        _repository.WriteFile(JsonSerializer.Serialize(tasks));
         
         Console.WriteLine("Task registered successfully!");
     }
